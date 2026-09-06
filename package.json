@@ -1,0 +1,23 @@
+{
+  "name": "ros2",
+  "version": "1.0.0",
+  "description": "This template will get you set up using ROS2 with VSCode as your IDE.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mashka-kashka/ros2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mashka-kashka/ros2/issues"
+  },
+  "homepage": "https://github.com/mashka-kashka/ros2#readme",
+  "devDependencies": {
+    "@devcontainers/cli": "^0.89.0"
+  }
+}
