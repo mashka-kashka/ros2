@@ -24,7 +24,7 @@
 		"--cap-add=SYS_PTRACE",
 		"--security-opt=seccomp:unconfined",
 		// For GUI applications on Linux, the IPC namespace may need to be shared with the host.
-		"--ipc=host"
+		"--ipc=host",
 		// For CUDA support, uncomment the following line. This allows the container to access the GPU on the host machine.
 		"--gpus",
 		"all",
@@ -41,12 +41,19 @@
 				"Ranch-Hand-Robotics.rde-pack",
 				"redhat.vscode-yaml",
 				"zachflower.uncrustify"
-			]
+			],
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash" 
+			}
 		}
 	},
-	"remoteUser": "vscode",
+	//"remoteUser": "vscode",
 	// Bind mount the host's home directory into the container
 	"mounts": [
 		"source=${localWorkspaceFolder}/.devcontainer/home,target=/home/vscode,type=bind"
-	]
+	],
+	"postCreateCommand": {
+		//"npm-init": "npm init -y",
+		//"install-deps": "npm install --save-dev @devcontainers/cli",
+	}	
 }
