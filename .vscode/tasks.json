@@ -3,7 +3,13 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-        // Build tasks
+        {
+            "label": "design",
+            "detail": "Run designer",
+            "type": "process",
+            "command": "designer6",
+            "problemMatcher": []
+        },
         {
             "label": "build",
             "detail": "Build workspace (default)",
@@ -28,7 +34,6 @@
             "group": "build",
             "problemMatcher": "$gcc"
         },
-        // Test tasks
         {
             "label": "test",
             "detail": "Run all unit tests and show results.",
@@ -39,7 +44,6 @@
                 "isDefault": true
             }
         },
-        // Clean
         {
             "label": "clean",
             "detail": "Run the clean target",
@@ -61,7 +65,6 @@
             "command": "source /opt/ros/${env:ROS_DISTRO}/setup.bash",
             "problemMatcher": []
         },
-        // Linting and static code analysis tasks
         {
             "label": "fix",
             "detail": "Reformat files with uncrustify.",
@@ -85,7 +88,6 @@
                     "source": "uncrustify",
                     "fileLocation": "relative",
                     "pattern": [
-                        // just the file name message
                         {
                             "regexp": "^(.*)'(.*)':",
                             "kind": "file",
@@ -107,7 +109,7 @@
                 "panel": "dedicated",
                 "reveal": "silent",
                 "clear": true
-            },
+            }
         },
         {
             "label": "cppcheck",
@@ -193,7 +195,6 @@
             ],
             "problemMatcher": []
         },
-        // Workspace editing tasks
         {
             "label": "new ament_cmake package",
             "detail": "Create a new ROS cpp package from a template.",
