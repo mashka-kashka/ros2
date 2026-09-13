@@ -1,4 +1,5 @@
 from setuptools import find_packages, setup
+from glob import glob
 
 package_name = 'qrobot_server'
 
@@ -10,6 +11,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/launch', glob('launch/*.py')),
     ],
     package_data={'': ['py.typed']},
     install_requires=['setuptools'],
@@ -19,13 +21,10 @@ setup(
     description='TODO: Package description',
     license='TODO: License declaration',
     extras_require={
-        'test': [
-            'pytest',
-        ],
     },
     entry_points={
         'console_scripts': [
-            'main_node = qrobot_server.ros_node:main',
+            'gui = qrobot_server.ros_node:main',
         ],
     },
 )

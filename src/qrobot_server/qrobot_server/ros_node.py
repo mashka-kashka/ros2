@@ -1,63 +1,78 @@
 import sys
 
-from PyQt6.QtCore import QTimer
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget
+# Qt
+from PyQt6.QtCore import QObject, QTimer, pyqtSignal
+from PyQt6.QtGui import QImage
+from PyQt6.QtWidgets import QApplication
+
+# ROS
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+
+# OpenCV
+import cv2
+
+# Робот
 from qrobot_server.main_window import QRobotMainWindow
 
+class QRobot(QObject):
+    """Класс для связи с Qt"""
+    image_received = pyqtSignal(QImage) # Сигнал о получении изображения
 
-class QRobotRosNode(Node):
-
+class RosNode(Node):
     """Основной узел ROS."""
 
-    def __init__(self, callback_ui_update):
-        super().__init__('qrobot_ros_node')
-        self.publisher_ = self.create_publisher(String, 'chopper_topic', 10)
-        self.callback_ui_update = callback_ui_update
+    def __init__(self, qrobot):
+        super().__init__('ros_node')
+        self.qrobot = qrobot
+        self.cv_bridge = CvBridge()
 
-    def send_message(self, text):
-        msg = String()
-        msg.data = text
-        self.publisher_.publish(msg)
-        self.get_logger().info(f'Published: "{text}"')
+        # Подписка на изображения с камеры
+        self.create_subscription(
+            Image,
+            "/image_raw",
+            self.image_callback,
+            10 # QoS History depth
+        )
 
-
-class MainWindow(QMainWindow):
-
-    """Главное окно приложения."""
-
-    def __init__(self, ros_node):
-        super().__init__()
-        self.ros_node = ros_node
-        self.setWindowTitle('ROS 2 PyQt6 Node')
-
-        # Layout & Widgets
-        self.button = QPushButton('Publish Message')
-        self.button.clicked.connect(self.on_button_clicked)
-
-        layout = QVBoxLayout()
-        layout.addWidget(self.button)
-
-        container = QWidget()
-        container.setLayout(layout)
-        self.setCentralWidget(container)
-
-    def on_button_clicked(self):
-        self.ros_node.send_message('Hello from PyQt6!')
-
-
+    def image_callback(self, msg):
+        try:
+            # Convert raw ROS image to an OpenCV BGR image
+            cv_img = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+            
+            # Convert BGR (OpenCV) to RGB (Qt standard)
+            rgb_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+            h, w, ch = rgb_img.shape
+            bytes_per_line = ch * w
+            
+            # Convert NumPy array to QImage
+            qt_image = QImage(
+                rgb_img.data, 
+                w, 
+                h, 
+                bytes_per_line, 
+                QImage.Format.Format_RGB888
+            )
+            
+            # Emit copy to avoid garbage collection/memory access race conditions
+            self.qrobot.image_received.emit(qt_image.copy())
+            
+        except Exception as e:
+            print(f"Error parsing image: {e}")
 def main(args=None):
     rclpy.init(args=args)
 
     app = QApplication(sys.argv)
 
+    qrobot = QRobot()
+
     # Create ROS node
-    ros_node = QRobotRosNode(callback_ui_update=None)
+    ros_node = RosNode(qrobot)
 
     # Create GUI window
-    window = QRobotMainWindow(app, ros_node)
+    window = QRobotMainWindow(app, qrobot)
     window.show()
 
     # Use QTimer to spin ROS 2 callbacks inside the Qt event loop

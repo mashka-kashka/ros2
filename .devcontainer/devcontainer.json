@@ -13,7 +13,8 @@
 		// "ghcr.io/althack/devcontainers/linux-x11-forwarding:0": {},
 		"ghcr.io/althack/devcontainers/ros2:0": {
 			"distro": "lyrical",
-			"package": "desktop"
+			"package": "desktop",
+			"additionalPackages": "v4l2-camera"
 		}
 	},
 	"containerEnv": {
@@ -28,7 +29,8 @@
 		// For CUDA support, uncomment the following line. This allows the container to access the GPU on the host machine.
 		"--gpus",
 		"all",
-		"-v", "/tmp/.X11-unix:/tmp/.X11-unix:ro"
+		"-v", "/tmp/.X11-unix:/tmp/.X11-unix:ro",
+		"--device=/dev/video0:/dev/video0"
 	],
 	"customizations": {
 		"vscode": {
@@ -40,7 +42,8 @@
 				"ms-vscode.cpptools",
 				"Ranch-Hand-Robotics.rde-pack",
 				"redhat.vscode-yaml",
-				"zachflower.uncrustify"
+				"zachflower.uncrustify",
+				"augustocdias.tasks-shell-input"
 			],
 			"settings": {
 				"terminal.integrated.defaultProfile.linux": "bash" 
@@ -52,8 +55,7 @@
 	"mounts": [
 		"source=${localWorkspaceFolder}/.devcontainer/home,target=/home/vscode,type=bind"
 	],
-	"postCreateCommand": {
-		//"npm-init": "npm init -y",
-		//"install-deps": "npm install --save-dev @devcontainers/cli",
-	}	
+	//"postCreateCommand": {
+		//"extra-pkg": "sudo apt-get update && sudo apt install -y ros-lyrical-v4l2-camera"
+	//}	
 }

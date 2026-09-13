@@ -6,8 +6,15 @@
         {
             "label": "design",
             "detail": "Run designer",
-            "type": "process",
-            "command": "designer6",
+            "type": "shell",
+            "command": "designer6 ${input:UiPicker}.ui",
+            "problemMatcher": []
+        },
+        {
+            "label": "uic",
+            "detail": "Run uic",
+            "type": "shell",
+            "command": "pyuic6 -x ${input:UiPicker}.ui -o ${input:UiPicker}_ui.py",
             "problemMatcher": []
         },
         {
@@ -250,6 +257,16 @@
             "id": "package",
             "type": "promptString",
             "description": "Package name"
+        },
+        {
+            "id": "UiPicker",
+            "type": "command",
+            "command": "shellCommand.execute",
+            "args": {
+                "command": "find ${workspaceFolder} -name '*.ui' | sed 's/...$//'",
+                "cwd": "${workspaceFolder}",
+                "description": "Select an UI file to process"
+           }
         }
     ]
 }
