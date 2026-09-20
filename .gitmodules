@@ -1,0 +1,6 @@
+[submodule "src/camera_ros"]
+	path = src/camera_ros
+	url = git@github.com:christianrauch/camera_ros.git
+[submodule "src/libcamera"]
+	path = src/libcamera
+	url = https://git.libcamera.org/libcamera/libcamera.git
