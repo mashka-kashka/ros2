@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QApplication
 # ROS
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 
@@ -29,12 +30,18 @@ class RosNode(Node):
         self.qrobot = qrobot
         self.cv_bridge = CvBridge()
 
+        qos_profile = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10
+        )
+
         # Подписка на изображения с камеры
         self.create_subscription(
             Image,
-            "/image_raw",
+            "/camera/image_raw",
             self.image_callback,
-            10 # QoS History depth
+            qos_profile
         )
 
     def image_callback(self, msg):
