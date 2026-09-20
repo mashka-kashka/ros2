@@ -25,8 +25,9 @@ def generate_launch_description():
                 "format": "RGB888",
                 "width": 320,
                 "height": 240,
-                "role": "video",
-        }]
+                "role": "viewfinder",
+                "pixel_format": 'mjpeg'
+         }]
     )
     
     img_transport_node = Node(
