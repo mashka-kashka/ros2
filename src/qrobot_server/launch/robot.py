@@ -22,12 +22,26 @@ def generate_launch_description():
         output='screen',
         parameters=[{
                 "camera": camera_param,
+                "format": "RGB888",
                 "width": 320,
                 "height": 240,
-                "FrameDurationLimit": [50000,50000],
+                "role": "video",
         }]
+    )
+    
+    img_transport_node = Node(
+		package='image_transport',
+		executable='republish',
+		name='republish_ffmpeg',
+		output='screen',
+		arguments=['compressed', 'raw'],
+		remappings=[
+			('/camera/image_raw', '/camera/image_raw_2'),
+			('/camera/image_raw/compressed', '/camera/image_raw/compressed_2')
+		] 
     )
 
     return LaunchDescription([
+		#img_transport_node,
         camera_node
     ])
