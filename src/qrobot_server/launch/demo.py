@@ -62,5 +62,6 @@ def generate_launch_description():
     
     return LaunchDescription([
         camera_node,
-        server_node
+        rviz_node
+        #server_node
     ])

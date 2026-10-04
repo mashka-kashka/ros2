@@ -14,7 +14,7 @@
 		"ghcr.io/althack/devcontainers/ros2:0": {
 			"distro": "lyrical",
 			"package": "desktop",
-			"additionalPackages": "v4l2-camera"
+			"additionalPackages": "v4l2-camera osrf-pycommon rviz2"
 		}
 	},
 	"containerEnv": {
@@ -46,16 +46,14 @@
 				"augustocdias.tasks-shell-input"
 			],
 			"settings": {
-				"terminal.integrated.defaultProfile.linux": "bash" 
+				"terminal.integrated.defaultProfile.linux": "fish" 
 			}
 		}
 	},
 	//"remoteUser": "vscode",
 	// Bind mount the host's home directory into the container
 	"mounts": [
-		"source=${localWorkspaceFolder}/.devcontainer/home,target=/home/vscode,type=bind"
+		"source=${localWorkspaceFolder}/.devcontainer/home,target=/home/vscode,type=bind",
 	],
-	//"postCreateCommand": {
-		//"extra-pkg": "sudo apt-get update && sudo apt install -y ros-lyrical-v4l2-camera"
-	//}	
+	"postCreateCommand": "./.devcontainer/postCreateCommand.sh"
 }

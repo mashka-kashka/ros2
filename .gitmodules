@@ -4,3 +4,9 @@
 [submodule "src/libcamera"]
 	path = src/libcamera
 	url = https://git.libcamera.org/libcamera/libcamera.git
+[submodule "src/mediapipe_ros2"]
+	path = src/mediapipe_ros2
+	url = https://github.com/dmartinelli1997/media_pipe_ros2
+[submodule "src/mediapipe_ros2_suite"]
+	path = src/mediapipe_ros2_suite
+	url = git@github.com:mashka-kashka/mediapipe_ros2_suite.git
