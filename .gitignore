@@ -4,3 +4,4 @@ log/*
 site/*
 .devcontainer/home/*
 *.pyc
+models/*
