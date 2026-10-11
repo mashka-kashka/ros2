@@ -16,16 +16,13 @@ from mediapipe_ros2_interfaces.msg import (
 
 from qrobot_gui.train_window import QTrainWindow
 
-class QTrainObject(QObject):
-    """Класс для связи с Qt"""
-    hand_received = pyqtSignal(Hand)
 
-class TrainNode(Node):
+class TrainNode(QObject, Node):
     """Основной узел для обучения моделей"""
 
-    def __init__(self, qobject):
+    hand_received = pyqtSignal(Hand)
+    def __init__(self):
         super().__init__('train_node')
-        self.qobject = qobject
 
         # Объявление параметров
         self.declare_parameter('hand_lm_topic', '/mediapipe/hand/landmarks')
@@ -47,20 +44,18 @@ class TrainNode(Node):
                 hand.handedness,
                 hand.score,
             )
-            self.qobject.hand_received.emit(hand)
+            self.hand_received.emit(hand)
 
 def main(args=None):
     rclpy.init(args=args)
 
     app = QApplication(sys.argv)
 
-    qobject = QTrainObject()
-
     # Create ROS node
-    train_node = TrainNode(qobject)
+    train_node = TrainNode()
 
     # Create GUI window
-    window = QTrainWindow(app, qobject)
+    window = QTrainWindow(app, train_node)
     window.show()
 
     # Use QTimer to spin ROS 2 callbacks inside the Qt event loop

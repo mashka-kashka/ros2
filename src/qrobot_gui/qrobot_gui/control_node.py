@@ -21,14 +21,19 @@ from qrobot_gui.control_window import QControlWindow
 class QControlObject(QObject):
     """Класс для связи с Qt"""
     image_received = pyqtSignal(QImage) # Сигнал о получении изображения
-
+    
 class ControlNode(Node):
-    """Основной узел ROS."""
+    """Узел для управления роботом."""
 
     def __init__(self, qobject):
-        super().__init__('ros_node')
+        super().__init__('control_node')
         self.qobject = qobject
-        self.cv_bridge = CvBridge()
+
+        # Объявление параметров
+        self.declare_parameter('camera_topic', '/image_raw')
+
+        # Чтение параметров
+        self.camera_topic = str(self.get_parameter('camera_topic').value)
 
         qos_profile = QoSProfile(
             reliability=ReliabilityPolicy.BEST_EFFORT,
@@ -36,13 +41,16 @@ class ControlNode(Node):
             depth=1
         )
 
-        # Подписка на изображения с камеры
+        # Создание подписок
         self.create_subscription(
             Image,
-            "/image_raw",
+            self.camera_topic,
             self.image_callback,
             qos_profile
         )
+
+        # OpenCV
+        self.cv_bridge = CvBridge()
 
     def image_callback(self, msg):
         try:
