@@ -1,9 +1,13 @@
 import os
+import sys
+import json
+import logging
+from datetime import datetime, timezone
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
-from mediapipe_ros2_interfaces.msg import (
+from mediapipe_ros2_suite.src.mediapipe_ros2_interfaces.msg import (
     HandLandmarks, Hand
 )
 
@@ -13,6 +17,14 @@ class GestureRecognizerNode(Node):
     """
     def __init__(self):
         super().__init__('gesture_recognizer_node')
+
+        # Логирование
+        log_handler = logging.StreamHandler()
+        log_handler.setFormatter(JSONFormatter())
+
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        self.logger.addHandler(log_handler)
 
         # -------- Parameters --------
         self.declare_parameter('model_name', 'rock_paper_scissors.mdl')
@@ -29,23 +41,39 @@ class GestureRecognizerNode(Node):
         self.out_topic = str(self.get_parameter('out_topic').value)
         self.min_det = float(self.get_parameter('min_detection_confidence').value)
 
-        self._last_report = self.get_clock().now().nanoseconds
-        from ament_index_python.packages import get_package_share_directory
-        share_dir = get_package_share_directory('qrobot_nn')
-        self.models_dir = os.path.join(share_dir, 'models')
+        # -------- Subscriber --------
+        qos = QoSProfile(reliability=ReliabilityPolicy.BEST_EFFORT,
+                         history=HistoryPolicy.KEEP_LAST, depth=5)
+        self.sub_hand_lm = self.create_subscription(HandLandmarks,
+                                                    self.landmarks_topic,
+                                                    self.on_hand_landmarks,
+                                                    qos)
 
-        self.publisher_ = self.create_publisher(String, self.out_topic, 10)
-        timer_period = 1.0  # секунды
-        self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.i = 0
-        self.get_logger().info('Gesture recognizer node started')
+    def on_hand_landmarks(self, msg: HandLandmarks):
+        #self.logger.info(msg)
+        for hand in msg.hands:
+            self.logger.info("Обнаружена рука", extra={
+                "handedness": hand.handedness,
+                "score": hand.score,
+                }
+            )
 
-    def timer_callback(self):
-        msg = String()
-        msg.data = f'Gesture, count={self.i}'
-        self.publisher_.publish(msg)
-        self.get_logger().info(f'Publishing: {msg.data}')
-        self.i += 1
+class JSONFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord) -> str:
+        log_data = {
+            "timestamp": datetime.fromtimestamp(
+                record.created, tz=timezone.utc
+            ).isoformat(),
+            "level": record.levelname,
+            "logger": record.name,
+            "message": record.getMessage(),
+            "handedness": getattr(record, "score", None),
+            "score": getattr(record, "score", None),
+        }
+        if record.exc_info:
+            log_data["exception"] = self.formatException(record.exc_info)
+
+        return json.dumps(log_data, ensure_ascii=False)
 
 def main() -> None:
     rclpy.init()

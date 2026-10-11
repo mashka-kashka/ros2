@@ -16,18 +16,18 @@ from cv_bridge import CvBridge
 import cv2
 
 # Робот
-from qrobot_server.main_window import QRobotMainWindow
+from qrobot_gui.control_window import QControlWindow
 
-class QRobot(QObject):
+class QControlObject(QObject):
     """Класс для связи с Qt"""
     image_received = pyqtSignal(QImage) # Сигнал о получении изображения
 
-class RosNode(Node):
+class ControlNode(Node):
     """Основной узел ROS."""
 
-    def __init__(self, qrobot):
+    def __init__(self, qobject):
         super().__init__('ros_node')
-        self.qrobot = qrobot
+        self.qobject = qobject
         self.cv_bridge = CvBridge()
 
         qos_profile = QoSProfile(
@@ -39,7 +39,7 @@ class RosNode(Node):
         # Подписка на изображения с камеры
         self.create_subscription(
             Image,
-            "/camera/image_raw",
+            "/image_raw",
             self.image_callback,
             qos_profile
         )
@@ -64,7 +64,7 @@ class RosNode(Node):
             )
             
             # Emit copy to avoid garbage collection/memory access race conditions
-            self.qrobot.image_received.emit(qt_image)
+            self.qobject.image_received.emit(qt_image)
             
         except Exception as e:
             print(f"Error parsing image: {e}")
@@ -73,13 +73,13 @@ def main(args=None):
 
     app = QApplication(sys.argv)
 
-    qrobot = QRobot()
+    qobject = QControlObject()
 
     # Create ROS node
-    ros_node = RosNode(qrobot)
+    ros_node = ControlNode(qobject)
 
     # Create GUI window
-    window = QRobotMainWindow(app, qrobot)
+    window = QControlWindow(app, qobject)
     window.show()
 
     # Use QTimer to spin ROS 2 callbacks inside the Qt event loop

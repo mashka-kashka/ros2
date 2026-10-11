@@ -4,18 +4,18 @@ from PyQt6.QtWidgets import QMainWindow, QGraphicsScene, QGraphicsPixmapItem
 from PyQt6.QtGui import QPixmap
 
 # Робот
-from qrobot_server.main_window_ui import Ui_MainWindow
+from qrobot_gui.control_window_ui import Ui_ControlWindow
 
 
-class QRobotMainWindow(QMainWindow):
+class QControlWindow(QMainWindow):
 
-    def __init__(self, app, qrobot):
+    def __init__(self, app, qobject):
         super().__init__()
 
         self.app = app
-        self.qrobot = qrobot
+        self.qobject = qobject
 
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_ControlWindow()
         self.ui.setupUi(self)
 
         self.logger = self.ui.teLog
@@ -24,7 +24,7 @@ class QRobotMainWindow(QMainWindow):
         self.scene = QGraphicsScene()
         self.ui.gv_camera.setScene(self.scene)
         self.scenePixmapItem = None
-        self.qrobot.image_received.connect(self.update_camera_image)
+        self.qobject.image_received.connect(self.update_camera_image)
 
     def update_camera_image(self, qt_image):
         pixmap = QPixmap.fromImage(qt_image)

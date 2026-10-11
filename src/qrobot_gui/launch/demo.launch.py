@@ -6,9 +6,9 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('qrobot_server')
+    pkg_share = get_package_share_directory('qrobot_gui')
     rviz_config_path = os.path.join(pkg_share, 'rviz',
-                                    'qrobot_server_config.rviz')
+                                    'qrobot_gui_config.rviz')
 
     rqt_node = Node(
             package='rqt_image_view',
@@ -52,15 +52,17 @@ def generate_launch_description():
             output='screen'
         )
 
-    # Серверный узел робота
-    server_node = Node(
-            package='qrobot_server',
-            executable='gui',
-            name='qrobot_server',
+    # Основной узел для управления
+    control_node = Node(
+            package='qrobot_gui',
+            executable='control',
+            name='qrobot_gui',
             output='screen'
         )
     
     return LaunchDescription([
-        #camera_node,
-        server_node
+        camera_node,
+        control_node,
+        #rviz_node,
+        #image_node,
     ])

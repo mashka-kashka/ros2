@@ -7,7 +7,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('qrobot_server')
+    pkg_share = get_package_share_directory('qrobot_gui')
 
     camera_param_name = "camera"
     camera_param_default = str(0)

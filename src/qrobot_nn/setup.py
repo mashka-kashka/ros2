@@ -27,7 +27,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'gesture_recognizer_node = qrobot_nn.gesture_recognizer_node:main'
+            'gesture_recognizer_node = qrobot_nn.gesture_recognizer_node:main',
         ],
     },
 )

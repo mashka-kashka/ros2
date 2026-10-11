@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/workspaces/ros2/src/qrobot_server/qrobot_server/main_window.ui'
+# Form implementation generated from reading ui file '/workspaces/ros2/src/qrobot_gui/qrobot_gui/control_window.ui'
 #
 # Created by: PyQt6 UI code generator 6.10.2
 #
@@ -9,15 +9,15 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(759, 627)
+class Ui_ControlWindow(object):
+    def setupUi(self, ControlWindow):
+        ControlWindow.setObjectName("ControlWindow")
+        ControlWindow.resize(759, 627)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_server/qrobot_server/icons/robot.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        MainWindow.setWindowIcon(icon)
-        MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly)
-        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+        icon.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_gui/qrobot_gui/../icons/robot.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        ControlWindow.setWindowIcon(icon)
+        ControlWindow.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly)
+        self.centralwidget = QtWidgets.QWidget(parent=ControlWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
@@ -37,7 +37,7 @@ class Ui_MainWindow(object):
         self.gv_camera.setObjectName("gv_camera")
         self.gridLayout_3.addWidget(self.gv_camera, 0, 0, 1, 1)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_server/qrobot_server/../../../../../home/vscode/robot/qrobot/icons/eye.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon1.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_gui/qrobot_gui/../icons/eye.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.tabWidget.addTab(self.tabCamera, icon1, "")
         self.tabServos = QtWidgets.QWidget()
         self.tabServos.setObjectName("tabServos")
@@ -60,7 +60,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidget(self.sa_servos)
         self.gridLayout_4.addWidget(self.scrollArea, 0, 0, 1, 1)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_server/qrobot_server/../../../../../home/vscode/.designer/icons/arm.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon2.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_gui/qrobot_gui/../icons/arm.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.tabWidget.addTab(self.tabServos, icon2, "")
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
         self.teLog = QtWidgets.QTextEdit(parent=self.centralwidget)
@@ -68,51 +68,51 @@ class Ui_MainWindow(object):
         self.teLog.setReadOnly(True)
         self.teLog.setObjectName("teLog")
         self.gridLayout.addWidget(self.teLog, 1, 0, 1, 1)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
+        ControlWindow.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(parent=ControlWindow)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-        self.toolBar = QtWidgets.QToolBar(parent=MainWindow)
+        ControlWindow.setStatusBar(self.statusbar)
+        self.toolBar = QtWidgets.QToolBar(parent=ControlWindow)
         self.toolBar.setObjectName("toolBar")
-        MainWindow.addToolBar(QtCore.Qt.ToolBarArea.TopToolBarArea, self.toolBar)
-        self.actionConfig = QtGui.QAction(parent=MainWindow)
+        ControlWindow.addToolBar(QtCore.Qt.ToolBarArea.TopToolBarArea, self.toolBar)
+        self.actionConfig = QtGui.QAction(parent=ControlWindow)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_server/qrobot_server/icons/gear.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon3.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_gui/qrobot_gui/../icons/gear.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.actionConfig.setIcon(icon3)
         self.actionConfig.setObjectName("actionConfig")
-        self.actionExit = QtGui.QAction(parent=MainWindow)
+        self.actionExit = QtGui.QAction(parent=ControlWindow)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_server/qrobot_server/icons/quit.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon4.addPixmap(QtGui.QPixmap("/workspaces/ros2/src/qrobot_gui/qrobot_gui/../icons/quit.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.actionExit.setIcon(icon4)
         self.actionExit.setObjectName("actionExit")
         self.toolBar.addAction(self.actionConfig)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionExit)
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi(ControlWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.actionExit.triggered.connect(MainWindow.close) # type: ignore
-        self.actionConfig.triggered.connect(MainWindow.on_config) # type: ignore
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.actionExit.triggered.connect(ControlWindow.close) # type: ignore
+        self.actionConfig.triggered.connect(ControlWindow.on_config) # type: ignore
+        QtCore.QMetaObject.connectSlotsByName(ControlWindow)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, ControlWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Робот"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabCamera), _translate("MainWindow", "Камера"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabServos), _translate("MainWindow", "Сервоприводы"))
-        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
-        self.actionConfig.setText(_translate("MainWindow", "Настройки"))
-        self.actionConfig.setStatusTip(_translate("MainWindow", "Открыть окно настроек робота"))
-        self.actionExit.setText(_translate("MainWindow", "Выход"))
-        self.actionExit.setStatusTip(_translate("MainWindow", "Завершить работу"))
-        self.actionExit.setShortcut(_translate("MainWindow", "Ctrl+X"))
+        ControlWindow.setWindowTitle(_translate("ControlWindow", "Робот"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabCamera), _translate("ControlWindow", "Камера"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabServos), _translate("ControlWindow", "Сервоприводы"))
+        self.toolBar.setWindowTitle(_translate("ControlWindow", "toolBar"))
+        self.actionConfig.setText(_translate("ControlWindow", "Настройки"))
+        self.actionConfig.setStatusTip(_translate("ControlWindow", "Открыть окно настроек робота"))
+        self.actionExit.setText(_translate("ControlWindow", "Выход"))
+        self.actionExit.setStatusTip(_translate("ControlWindow", "Завершить работу"))
+        self.actionExit.setShortcut(_translate("ControlWindow", "Ctrl+X"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    ControlWindow = QtWidgets.QMainWindow()
+    ui = Ui_ControlWindow()
+    ui.setupUi(ControlWindow)
+    ControlWindow.show()
     sys.exit(app.exec())

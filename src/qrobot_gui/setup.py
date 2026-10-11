@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 from glob import glob
 
-package_name = 'qrobot_server'
+package_name = 'qrobot_gui'
 
 setup(
     name=package_name,
@@ -12,6 +12,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', glob('launch/*.launch.py')),
+        ('share/' + package_name + '/icons', glob('icons/*.png')),
     ],
     package_data={'': ['py.typed']},
     install_requires=['setuptools'],
@@ -24,7 +25,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'gui = qrobot_server.ros_node:main',
+            'control = qrobot_gui.control_node:main',
+            'train = qrobot_gui.train_node:main',
         ],
     },
 )
